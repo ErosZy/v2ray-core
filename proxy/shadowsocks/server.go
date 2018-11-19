@@ -3,7 +3,6 @@ package shadowsocks
 import (
 	"context"
 	"time"
-	"fmt"
 
 	"v2ray.com/core"
 	"v2ray.com/core/common"
@@ -73,6 +72,7 @@ func (s *Server) Process(ctx context.Context, network net.Network, conn internet
 }
 
 func (s *Server) handlerUDPPayload(ctx context.Context, conn internet.Connection, dispatcher routing.Dispatcher) error {
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handlerUDPPayload");
 	udpServer := udp.NewDispatcher(dispatcher, func(ctx context.Context, payload *buf.Buffer) {
 		request := protocol.RequestHeaderFromContext(ctx)
 		if request == nil {
@@ -97,7 +97,6 @@ func (s *Server) handlerUDPPayload(ctx context.Context, conn internet.Connection
 	}
 	inbound.User = s.user
 
-	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handlerUDPPayload");
 	reader := buf.NewReader(conn)
 	for {
 		mpayload, err := reader.ReadMultiBuffer()
