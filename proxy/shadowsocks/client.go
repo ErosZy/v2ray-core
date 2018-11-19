@@ -47,6 +47,7 @@ func NewClient(ctx context.Context, config *ClientConfig) (*Client, error) {
 
 // Process implements OutboundHandler.Process().
 func (c *Client) Process(ctx context.Context, link *transport.Link, dialer internet.Dialer) error {
+	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> client process");
 	outbound := session.OutboundFromContext(ctx)
 	if outbound == nil || !outbound.Target.IsValid() {
 		return newError("target not specified")

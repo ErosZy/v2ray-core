@@ -64,8 +64,10 @@ func (s *Server) Network() net.NetworkList {
 func (s *Server) Process(ctx context.Context, network net.Network, conn internet.Connection, dispatcher routing.Dispatcher) error {
 	switch network {
 	case net.Network_TCP:
+		fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handleConnection");
 		return s.handleConnection(ctx, conn, dispatcher)
 	case net.Network_UDP:
+		fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handlerUDPPayload");
 		return s.handlerUDPPayload(ctx, conn, dispatcher)
 	default:
 		return newError("unknown network: ", network)
@@ -73,7 +75,6 @@ func (s *Server) Process(ctx context.Context, network net.Network, conn internet
 }
 
 func (s *Server) handlerUDPPayload(ctx context.Context, conn internet.Connection, dispatcher routing.Dispatcher) error {
-	fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handlerUDPPayload");
 	udpServer := udp.NewDispatcher(dispatcher, func(ctx context.Context, payload *buf.Buffer) {
 		request := protocol.RequestHeaderFromContext(ctx)
 		if request == nil {
