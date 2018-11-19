@@ -3,7 +3,6 @@ package shadowsocks
 import (
 	"context"
 	"time"
-	"fmt"
 
 	"v2ray.com/core"
 	"v2ray.com/core/common"
@@ -64,10 +63,10 @@ func (s *Server) Network() net.NetworkList {
 func (s *Server) Process(ctx context.Context, network net.Network, conn internet.Connection, dispatcher routing.Dispatcher) error {
 	switch network {
 	case net.Network_TCP:
-		fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handleConnection");
+		newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> server tcp process").WriteToLog(session.ExportIDToError(ctx))
 		return s.handleConnection(ctx, conn, dispatcher)
 	case net.Network_UDP:
-		fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>>> handlerUDPPayload");
+		newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> server udp process").WriteToLog(session.ExportIDToError(ctx))
 		return s.handlerUDPPayload(ctx, conn, dispatcher)
 	default:
 		return newError("unknown network: ", network)
