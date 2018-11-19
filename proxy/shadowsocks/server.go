@@ -142,7 +142,7 @@ func (s *Server) handlerUDPPayload(ctx context.Context, conn internet.Connection
 					Reason: "",
 				})
 			}
-			newError("tunnelling request to ", dest).WriteToLog(session.ExportIDToError(ctx))
+			newError(">>>>>>>>>>>>>>> tunnelling request to ", dest).WriteToLog(session.ExportIDToError(ctx))
 
 			ctx = protocol.ContextWithRequestHeader(ctx, request)
 			udpServer.Dispatch(ctx, dest, data)
@@ -182,7 +182,7 @@ func (s *Server) handleConnection(ctx context.Context, conn internet.Connection,
 		Status: log.AccessAccepted,
 		Reason: "",
 	})
-	newError("tunnelling request to ", dest).WriteToLog(session.ExportIDToError(ctx))
+	newError(">>>>>>>>>>>>>>>>>>> tunnelling request to ", dest).WriteToLog(session.ExportIDToError(ctx))
 
 	ctx, cancel := context.WithCancel(ctx)
 	timer := signal.CancelAfterInactivity(ctx, cancel, sessionPolicy.Timeouts.ConnectionIdle)
