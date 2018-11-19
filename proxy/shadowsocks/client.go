@@ -2,6 +2,7 @@ package shadowsocks
 
 import (
 	"context"
+	"fmt"
 
 	"v2ray.com/core"
 	"v2ray.com/core/common"
