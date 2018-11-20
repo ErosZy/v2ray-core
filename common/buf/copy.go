@@ -46,9 +46,7 @@ func ExportBuffer() CopyOption {
 		handler.onData = append(handler.onData, func(b MultiBuffer){
 			for _, w := range b {
 				k := w.Bytes();
-				fmt.Println(k);
 			}
-			// fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>> " + strconv.Itoa(int(b.Len())) + ", " + b.String());
 		})
 	}
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"reflect"
 	"sync"
+	"bytes"
 
 	"v2ray.com/core/common"
 	"v2ray.com/core/common/serial"
@@ -16,6 +17,20 @@ import (
 	"v2ray.com/core/features/routing"
 	"v2ray.com/core/features/stats"
 )
+
+type UDPBufferExport interface {
+	OnData(data []bytes) int
+}
+
+var exportor UDPBufferExport
+
+func SetUDPBufferExport(e UDPBufferExport) {
+	exportor = e
+}
+
+func GetUDPBufferExport() UDPBufferExport {
+	return exportor
+}
 
 // Server is an instance of V2Ray. At any time, there must be at most one Server instance running.
 type Server interface {
