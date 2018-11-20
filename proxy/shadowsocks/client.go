@@ -147,7 +147,7 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 		requestDone := func() error {
 			defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
 			
-			if err := zbuf.Copy(link.Reader, writer, buf.UpdateActivity(timer), buf.ExportBuffer()); err != nil {
+			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer), buf.ExportBuffer()); err != nil {
 				return newError("failed to transport all UDP request").Base(err)
 			}
 			return nil
