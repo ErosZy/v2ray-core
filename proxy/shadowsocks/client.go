@@ -185,8 +185,12 @@ func init() {
 	}))
 }
 
+type copyHandler struct {
+	onData []dataHandler
+}
+
 func bufferExport(ctx context.Context) buf.CopyOption {
-	return func(handler *buf.copyHandler) {
+	return func(handler *copyHandler) {
 		handler.onData = append(handler.onData, func(b buf.MultiBuffer){
 			newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + b.String()).WriteToLog(session.ExportIDToError(ctx))
 		})
