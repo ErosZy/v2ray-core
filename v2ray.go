@@ -4,7 +4,6 @@ import (
 	"context"
 	"reflect"
 	"sync"
-	"bytes"
 
 	"v2ray.com/core/common"
 	"v2ray.com/core/common/serial"
@@ -19,7 +18,7 @@ import (
 )
 
 type UDPBufferExport interface {
-	OnData(data []bytes) int
+	OnData(data []byte) int
 }
 
 var exportor UDPBufferExport
