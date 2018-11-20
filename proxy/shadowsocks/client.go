@@ -150,12 +150,7 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 		requestDone := func() error {
 			defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
 			
-			var tmp bytes.Buffer
-			tmpWriter := bufio.NewWriter(&tmp)
-			buf.Copy(link.Reader, tmpWriter);
-			newError(">>>>>>>>>>>>>>>>>>>> " + tmp.Size()).WriteToLog(session.ExportIDToError(ctx))
-
-			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer)); err != nil {
+			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer), bufferExport()); err != nil {
 				return newError("failed to transport all UDP request").Base(err)
 			}
 			return nil
@@ -190,4 +185,12 @@ func init() {
 	common.Must(common.RegisterConfig((*ClientConfig)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
 		return NewClient(ctx, config.(*ClientConfig))
 	}))
+}
+
+func bufferExport() CopyOption {
+	return func(handler *copyHandler) {
+		handler.onData = append(handler.onData, func(b MultiBuffer){
+			newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + b.String()).WriteToLog(session.ExportIDToError(ctx))
+		})
+	}
 }
