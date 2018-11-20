@@ -3,6 +3,7 @@ package buf
 import (
 	"io"
 	"time"
+	"fmt"
 
 	"v2ray.com/core/export"
 	"v2ray.com/core/common/errors"
@@ -47,9 +48,7 @@ func ExportBuffer() CopyOption {
 			for _, w := range b {
 				k := w.Bytes();
 				exportor := export.GetUDPBufferExport()
-				if exportor != nil {
-					exportor.OnData(k)
-				}
+				fmt.Println(exportor)
 			}
 		})
 	}
