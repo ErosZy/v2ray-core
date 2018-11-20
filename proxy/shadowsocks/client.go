@@ -15,6 +15,8 @@ import (
 	"v2ray.com/core/features/policy"
 	"v2ray.com/core/transport"
 	"v2ray.com/core/transport/internet"
+
+	zbuf "github.com/ErosZy/v2ray-core/common/buf"
 )
 
 // Client is a inbound handler for Shadowsocks protocol
@@ -148,7 +150,7 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 		requestDone := func() error {
 			defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
 			
-			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer), bufferExport(ctx)); err != nil {
+			if err := zbuf.Copy(link.Reader, writer, buf.UpdateActivity(timer)); err != nil {
 				return newError("failed to transport all UDP request").Base(err)
 			}
 			return nil
@@ -183,16 +185,4 @@ func init() {
 	common.Must(common.RegisterConfig((*ClientConfig)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
 		return NewClient(ctx, config.(*ClientConfig))
 	}))
-}
-
-type copyHandler struct {
-	onData []dataHandler
-}
-
-func bufferExport(ctx context.Context) buf.CopyOption {
-	return func(handler *copyHandler) {
-		handler.onData = append(handler.onData, func(b buf.MultiBuffer){
-			newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + b.String()).WriteToLog(session.ExportIDToError(ctx))
-		})
-	}
 }
