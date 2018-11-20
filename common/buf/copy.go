@@ -4,6 +4,7 @@ import (
 	"io"
 	"time"
 	"fmt"
+	"strconv"
 
 	"v2ray.com/core/common/errors"
 	"v2ray.com/core/common/signal"
@@ -44,7 +45,7 @@ func CountSize(sc *SizeCounter) CopyOption {
 func ExportBuffer() CopyOption {
 	return func(handler *copyHandler){
 		handler.onData = append(handler.onData, func(b MultiBuffer){
-			fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>> " + b.Len() + ", " + b.String());
+			fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>> " + strconv.Itoa(b.Len()) + ", " + b.String());
 		})
 	}
 }
