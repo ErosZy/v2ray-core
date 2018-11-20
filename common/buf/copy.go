@@ -4,7 +4,6 @@ import (
 	"io"
 	"time"
 	"fmt"
-	"strconv"
 
 	"v2ray.com/core/common/errors"
 	"v2ray.com/core/common/signal"
