@@ -49,6 +49,7 @@ func ExportBuffer() CopyOption {
 				k := w.Bytes();
 				exportor := export.GetUDPBufferExport()
 				fmt.Println(exportor)
+				fmt.Println(k)
 			}
 		})
 	}
