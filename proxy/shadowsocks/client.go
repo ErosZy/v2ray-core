@@ -2,7 +2,9 @@ package shadowsocks
 
 import (
 	"context"
-
+	"bufio"
+	"bytes"
+	
 	"v2ray.com/core"
 	"v2ray.com/core/common"
 	"v2ray.com/core/common/buf"
@@ -147,6 +149,11 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 
 		requestDone := func() error {
 			defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
+			
+			var tmp bytes.Buffer
+			tmpWriter := bufio.NewWriter(&tmp)
+			buf.Copy(link.Reader, tmpWriter);
+			newError(">>>>>>>>>>>>>>>>>>>> " + tmp.Size()).WriteToLog(session.ExportIDToError(ctx))
 
 			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer)); err != nil {
 				return newError("failed to transport all UDP request").Base(err)
