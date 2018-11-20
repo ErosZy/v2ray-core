@@ -17,20 +17,6 @@ import (
 	"v2ray.com/core/features/stats"
 )
 
-type UDPBufferExport interface {
-	OnData(data []byte) int
-}
-
-var exportor UDPBufferExport
-
-func SetUDPBufferExport(e UDPBufferExport) {
-	exportor = e
-}
-
-func GetUDPBufferExport() UDPBufferExport {
-	return exportor
-}
-
 // Server is an instance of V2Ray. At any time, there must be at most one Server instance running.
 type Server interface {
 	common.Runnable

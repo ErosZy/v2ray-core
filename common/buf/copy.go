@@ -5,7 +5,7 @@ import (
 	"time"
 	"fmt"
 
-	"v2ray.com/core"
+	"v2ray.com/core/export"
 	"v2ray.com/core/common/errors"
 	"v2ray.com/core/common/signal"
 )
@@ -47,7 +47,7 @@ func ExportBuffer() CopyOption {
 		handler.onData = append(handler.onData, func(b MultiBuffer){
 			for _, w := range b {
 				k := w.Bytes();
-				exportor := core.GetUDPBufferExport()
+				exportor := export.GetUDPBufferExport()
 				if exportor != nil {
 					exportor.OnData(k)
 				}
