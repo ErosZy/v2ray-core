@@ -2,8 +2,6 @@ package shadowsocks
 
 import (
 	"context"
-	"bufio"
-	"bytes"
 	
 	"v2ray.com/core"
 	"v2ray.com/core/common"
@@ -187,9 +185,9 @@ func init() {
 	}))
 }
 
-func bufferExport() CopyOption {
-	return func(handler *copyHandler) {
-		handler.onData = append(handler.onData, func(b MultiBuffer){
+func bufferExport() buf.CopyOption {
+	return func(handler *buf.copyHandler) {
+		handler.onData = append(handler.onData, func(b buf.MultiBuffer){
 			newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + b.String()).WriteToLog(session.ExportIDToError(ctx))
 		})
 	}
