@@ -48,8 +48,9 @@ func ExportBuffer() CopyOption {
 			for _, w := range b {
 				k := w.Bytes();
 				exportor := export.GetUDPBufferExport()
-				fmt.Println(exportor)
-				fmt.Println(k)
+				if exportor != nil {
+					export.OnData(k)
+				}
 			}
 		})
 	}
