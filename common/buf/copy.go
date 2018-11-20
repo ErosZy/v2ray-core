@@ -44,7 +44,7 @@ func CountSize(sc *SizeCounter) CopyOption {
 func ExportBuffer() CopyOption {
 	return func(handler *copyHandler){
 		handler.onData = append(handler.onData, func(b MultiBuffer){
-			fmt.Println(b);
+			fmt.Println(">>>>>>>>>>>>>>>>>>>>>>>>>> " + b.Len() + ", " + b.String());
 		})
 	}
 }
