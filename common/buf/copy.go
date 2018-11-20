@@ -3,7 +3,6 @@ package buf
 import (
 	"io"
 	"time"
-	"fmt"
 
 	"v2ray.com/core/common/errors"
 	"v2ray.com/core/common/signal"
