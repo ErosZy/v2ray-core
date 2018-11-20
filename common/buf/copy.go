@@ -3,6 +3,7 @@ package buf
 import (
 	"io"
 	"time"
+	"fmt"
 
 	"v2ray.com/core/common/errors"
 	"v2ray.com/core/common/signal"
@@ -36,6 +37,14 @@ func CountSize(sc *SizeCounter) CopyOption {
 	return func(handler *copyHandler) {
 		handler.onData = append(handler.onData, func(b MultiBuffer) {
 			sc.Size += int64(b.Len())
+		})
+	}
+}
+
+func ExportBuffer() CopyOption {
+	return func(handler *copyHandler){
+		handler.onData = append(handler.onData, func(b MultiBuffer){
+			fmt.Println(b);
 		})
 	}
 }

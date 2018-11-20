@@ -15,8 +15,6 @@ import (
 	"v2ray.com/core/features/policy"
 	"v2ray.com/core/transport"
 	"v2ray.com/core/transport/internet"
-
-	zbuf "github.com/ErosZy/v2ray-core/common/buf"
 )
 
 // Client is a inbound handler for Shadowsocks protocol
@@ -141,7 +139,6 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 	}
 
 	if request.Command == protocol.RequestCommandUDP {
-
 		writer := &buf.SequentialWriter{Writer: &UDPWriter{
 			Writer:  conn,
 			Request: request,
@@ -150,7 +147,7 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 		requestDone := func() error {
 			defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
 			
-			if err := zbuf.Copy(link.Reader, writer, buf.UpdateActivity(timer)); err != nil {
+			if err := zbuf.Copy(link.Reader, writer, buf.UpdateActivity(timer), buf.ExportBuffer()); err != nil {
 				return newError("failed to transport all UDP request").Base(err)
 			}
 			return nil
