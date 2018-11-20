@@ -148,7 +148,7 @@ func (c *Client) Process(ctx context.Context, link *transport.Link, dialer inter
 		requestDone := func() error {
 			defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
 			
-			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer), bufferExport()); err != nil {
+			if err := buf.Copy(link.Reader, writer, buf.UpdateActivity(timer), bufferExport(ctx)); err != nil {
 				return newError("failed to transport all UDP request").Base(err)
 			}
 			return nil
@@ -185,7 +185,7 @@ func init() {
 	}))
 }
 
-func bufferExport() buf.CopyOption {
+func bufferExport(ctx context.Context) buf.CopyOption {
 	return func(handler *buf.copyHandler) {
 		handler.onData = append(handler.onData, func(b buf.MultiBuffer){
 			newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + b.String()).WriteToLog(session.ExportIDToError(ctx))
