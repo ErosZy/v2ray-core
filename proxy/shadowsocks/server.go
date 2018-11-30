@@ -61,10 +61,8 @@ func (s *Server) Network() []net.Network {
 func (s *Server) Process(ctx context.Context, network net.Network, conn internet.Connection, dispatcher routing.Dispatcher) error {
 	switch network {
 	case net.Network_TCP:
-		newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> server tcp process").WriteToLog(session.ExportIDToError(ctx))
 		return s.handleConnection(ctx, conn, dispatcher)
 	case net.Network_UDP:
-		newError(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> server udp process").WriteToLog(session.ExportIDToError(ctx))
 		return s.handlerUDPPayload(ctx, conn, dispatcher)
 	default:
 		return newError("unknown network: ", network)
@@ -140,7 +138,6 @@ func (s *Server) handlerUDPPayload(ctx context.Context, conn internet.Connection
 					Reason: "",
 				})
 			}
-			newError(">>>>>>>>>>>>>>> tunnelling request to ", dest).WriteToLog(session.ExportIDToError(ctx))
 
 			ctx = protocol.ContextWithRequestHeader(ctx, request)
 			udpServer.Dispatch(ctx, dest, data)
@@ -180,7 +177,6 @@ func (s *Server) handleConnection(ctx context.Context, conn internet.Connection,
 		Status: log.AccessAccepted,
 		Reason: "",
 	})
-	newError(">>>>>>>>>>>>>>>>>>> tunnelling request to ", dest).WriteToLog(session.ExportIDToError(ctx))
 
 	ctx, cancel := context.WithCancel(ctx)
 	timer := signal.CancelAfterInactivity(ctx, cancel, sessionPolicy.Timeouts.ConnectionIdle)
